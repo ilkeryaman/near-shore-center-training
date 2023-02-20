@@ -1,0 +1,30 @@
+server:
+  port: 8082
+
+address:
+  file:
+    url: src/main/resources/data/addresses.json
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, heapdump, threaddump, metrics
+  info:
+    env:
+      enabled: true
+info:
+  contributors:
+    - Ilker Yaman
+    - Sinan Bulubay
+    - Gizem Solum
+    - Abdul Samet Altunsoy
+
+spring-doc:
+  packages-to-scan: com.nsc.address.controller
+  api-docs:
+    enabled: true
+    path: /address-api/api-docs
+  swagger-ui:
+    path: /address-api/swagger-ui
+

@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "city": "İstanbul",
+    "district": "Avcılar"
+  },
+  {
+    "id": 2,
+    "city": "İstanbul",
+    "district": "Beşiktaş"
+  },
+  {
+    "id": 3,
+    "city": "İstanbul",
+    "district": "Bahçelievler"
+  },
+  {
+    "id": 4,
+    "city": "İzmir",
+    "district": "Bornova"
+  },
+  {
+    "id": 5,
+    "city": "İzmir",
+    "district": "Çeşme"
+  },
+  {
+    "id": 6,
+    "city": "İzmir",
+    "district": "Urla"
+  },
+  {
+    "id": 7,
+    "city": "Ankara",
+    "district": "Çankaya"
+  },
+  {
+    "id": 8,
+    "city": "Ankara",
+    "district": "Mamak"
+  }
+]

@@ -1,0 +1,24 @@
+[
+  {
+    "id": 1,
+    "customerNo": "1001",
+    "name": "Alexander",
+    "surname": "Bell",
+    "segment": "Individual",
+    "address": {
+      "city": "İstanbul",
+      "district": "Bağcılar"
+    }
+  },
+  {
+    "id": 2,
+    "customerNo": "1002",
+    "name": "Isaac",
+    "surname": "Newton",
+    "segment": "Individual",
+    "address": {
+      "city": "İzmir",
+      "district": "Çeşme"
+    }
+  }
+]

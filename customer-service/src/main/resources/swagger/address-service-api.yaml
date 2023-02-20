@@ -1,0 +1,114 @@
+openapi: 3.0.1
+info:
+  title: Address Service API
+  description: Address service for Java Trainings.
+  version: "1.0"
+servers:
+  - url: http://localhost:8082
+    description: Generated server url
+paths:
+  /address-api/addresses:
+    get:
+      tags:
+        - address-controller
+      summary: Gets list of addresses.
+      operationId: getAddresses
+      responses:
+        "400":
+          description: BAD REQUEST
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResponse'
+    post:
+      tags:
+        - address-controller
+      summary: Adds a new address.
+      operationId: addAddress
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Address'
+        required: true
+      responses:
+        "400":
+          description: BAD REQUEST
+        "500":
+          description: INTERNAL SERVER ERROR
+        "201":
+          description: CREATED
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResponse'
+  /address-api/addresses/{id}:
+    get:
+      tags:
+        - address-controller
+      summary: Gets address by id.
+      operationId: getAddressById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "400":
+          description: BAD REQUEST
+        "404":
+          description: NOT FOUND
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResponse'
+    delete:
+      tags:
+        - address-controller
+      summary: Deletes an address.
+      operationId: deleteAddress
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "400":
+          description: BAD REQUEST
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResponse'
+        "500":
+          description: INTERNAL SERVER ERROR
+components:
+  schemas:
+    Address:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        city:
+          type: string
+        district:
+          type: string
+    AddressResponse:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
