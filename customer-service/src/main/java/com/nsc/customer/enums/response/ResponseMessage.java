@@ -4,7 +4,8 @@ public enum ResponseMessage {
     OK("Operation completed successfully!"),
     GENERAL_ERROR("An error occured!"),
     BAD_REQUEST("Please check request parameters!"),
-    CUSTOMER_NOT_FOUND("Customer not found!");
+    CUSTOMER_NOT_FOUND("Customer not found!"),
+    ADDRESS_NOT_FOUND("Address not found!");
 
     private String value;
 

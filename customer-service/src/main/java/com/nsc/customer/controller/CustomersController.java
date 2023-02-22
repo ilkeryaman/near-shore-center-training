@@ -5,7 +5,7 @@ import com.nsc.customer.enums.response.ResponseMessage;
 import com.nsc.customer.exception.CustomerNotFoundException;
 import com.nsc.customer.model.customer.Customer;
 import com.nsc.customer.model.response.CustomerResponse;
-import com.nsc.customer.service.ICustomerService;
+import com.nsc.customer.service.customer.ICustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -24,7 +24,7 @@ import java.util.List;
 @RequestMapping("/customer-api")
 public class CustomersController {
 
-    @Resource(name = "customerFileService")
+    @Resource(name = "customerMemoryDBService")
     ICustomerService customerService;
 
     @Operation(summary = "Gets list of customers.")

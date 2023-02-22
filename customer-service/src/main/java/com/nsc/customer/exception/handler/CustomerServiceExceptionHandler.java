@@ -2,6 +2,7 @@ package com.nsc.customer.exception.handler;
 
 import com.nsc.customer.enums.response.ResponseCode;
 import com.nsc.customer.enums.response.ResponseMessage;
+import com.nsc.customer.exception.AddressNotFoundException;
 import com.nsc.customer.exception.CustomerNotFoundException;
 import com.nsc.customer.model.response.CustomerResponse;
 import org.springframework.http.HttpHeaders;
@@ -22,6 +23,12 @@ public class CustomerServiceExceptionHandler extends ResponseEntityExceptionHand
     @ExceptionHandler(CustomerNotFoundException.class)
     public final ResponseEntity<Object> handleCustomerNotFoundException(CustomerNotFoundException ex, WebRequest request) {
         CustomerResponse customerResponse = new CustomerResponse(ResponseCode.CUSTOMER_NOT_FOUND.getValue(), ResponseMessage.CUSTOMER_NOT_FOUND.getValue(), null);
+        return new ResponseEntity(customerResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(AddressNotFoundException.class)
+    public final ResponseEntity<Object> handleAddressNotFoundException(AddressNotFoundException ex, WebRequest request) {
+        CustomerResponse customerResponse = new CustomerResponse(ResponseCode.ADDRESS_NOT_FOUND.getValue(), ResponseMessage.ADDRESS_NOT_FOUND.getValue(), null);
         return new ResponseEntity(customerResponse, HttpStatus.NOT_FOUND);
     }
 

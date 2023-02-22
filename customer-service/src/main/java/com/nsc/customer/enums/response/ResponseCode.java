@@ -4,7 +4,8 @@ public enum ResponseCode {
     OK("CS_100"),
     GENERAL_ERROR("CS_001"),
     BAD_REQUEST("CS_102"),
-    CUSTOMER_NOT_FOUND("CS_103");
+    CUSTOMER_NOT_FOUND("CS_103"),
+    ADDRESS_NOT_FOUND("CS_104");
 
     private String value;
 

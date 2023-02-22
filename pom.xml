@@ -26,6 +26,7 @@
         <lombok.version>1.18.26</lombok.version>
         <jackson-databind.version>2.13.3</jackson-databind.version>
         <open-api.version>1.6.10</open-api.version>
+        <junit.version>4.13.2</junit.version>
     </properties>
 
     <dependencies>

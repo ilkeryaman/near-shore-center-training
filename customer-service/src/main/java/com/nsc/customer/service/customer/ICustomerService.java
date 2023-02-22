@@ -1,4 +1,4 @@
-package com.nsc.customer.service;
+package com.nsc.customer.service.customer;
 
 import com.nsc.customer.model.customer.Customer;
 

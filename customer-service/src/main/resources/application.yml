@@ -5,6 +5,15 @@ customer:
   file:
     url: src/main/resources/data/customers.json
 
+rest:
+  address-service:
+    uri: http://localhost:8082/address-api/addresses
+
+cache:
+  clean:
+    intervalInMilliseconds: 20000
+
+
 management:
   endpoints:
     web:
