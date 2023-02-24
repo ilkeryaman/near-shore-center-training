@@ -9,6 +9,15 @@ spring:
           clientId: customer-service
           clientSecret: gzu9gPIrRL6BpbRonbeLyouVbeF2E9sA
           accessTokenUri: http://192.168.229.129:38080/realms/address-service/protocol/openid-connect/token
+          expireCorrectionInSeconds: 20
+        registration:
+          address-api:
+            clientId: customer-service
+            clientSecret: gzu9gPIrRL6BpbRonbeLyouVbeF2E9sA
+            authorizationGrantType: client_credentials
+        provider:
+          address-api:
+            tokenUri: http://192.168.229.129:38080/realms/address-service/protocol/openid-connect/token
 
 keycloak:
   auth-server-url: http://192.168.229.129:38080

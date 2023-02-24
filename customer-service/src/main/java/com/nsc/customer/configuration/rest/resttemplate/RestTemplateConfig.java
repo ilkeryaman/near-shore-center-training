@@ -1,5 +1,6 @@
 package com.nsc.customer.configuration.rest.resttemplate;
 
+import com.nsc.customer.configuration.rest.resttemplate.handler.RestTemplateResponseErrorHandler;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +22,7 @@ public class RestTemplateConfig {
     @Bean
     public RestTemplate restTemplate() {
         OAuth2RestTemplate restTemplate = new OAuth2RestTemplate(addressApiResourceDetails(), new DefaultOAuth2ClientContext());
-        //restTemplate.setErrorHandler(new RestTemplateResponseErrorHandler());
+        restTemplate.setErrorHandler(new RestTemplateResponseErrorHandler());
         ClientCredentialsAccessTokenProvider provider = new ClientCredentialsAccessTokenProvider();
         restTemplate.setAccessTokenProvider(provider);
         return restTemplate;

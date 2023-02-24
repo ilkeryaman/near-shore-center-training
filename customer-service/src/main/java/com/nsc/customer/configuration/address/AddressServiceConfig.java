@@ -1,7 +1,7 @@
 package com.nsc.customer.configuration.address;
 
 import com.nsc.customer.service.address.IAddressService;
-import com.nsc.customer.service.address.impl.AddressRestTemplateServiceImpl;
+import com.nsc.customer.service.address.impl.AddressWebClientServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -11,6 +11,6 @@ public class AddressServiceConfig {
     @Bean
     @Primary
     public IAddressService getAddressService(){
-        return new AddressRestTemplateServiceImpl();
+        return new AddressWebClientServiceImpl();
     }
 }
