@@ -5,40 +5,36 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nsc.customer.converter.mapstruct.IAddressMapper;
 import com.nsc.customer.model.customer.Address;
 import com.nsc.customer.service.address.IAddressService;
-import com.nsc.customer.util.HttpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Service("addressRestTemplateService")
-public class AddressRestTemplateServiceImpl implements IAddressService {
+@Service("addressWebClientService")
+public class AddressWebClientServiceImpl implements IAddressService {
 
     @Value("${rest.address-service.uri}")
     private String uri;
 
     @Autowired
-    private RestTemplate restTemplate;
+    private ObjectMapper objectMapper;
 
     @Autowired
     private IAddressMapper addressMapper;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    private WebClient webClient;
 
     @Override
     public List<Address> getListOfAddresses() {
         List<Address> listOfAddresses = new ArrayList<>();
-
-        ResponseEntity<com.nsc.swagger.address_service_api.model.AddressResponse> restResult =
-                restTemplate.exchange(uri, HttpMethod.GET, HttpUtil.getHttpEntity(), com.nsc.swagger.address_service_api.model.AddressResponse.class);
-
-        com.nsc.swagger.address_service_api.model.AddressResponse addressResponse = restResult.getBody();
+        Mono<com.nsc.swagger.address_service_api.model.AddressResponse> monoResult =
+                webClient.get().uri(uri).retrieve().bodyToMono(com.nsc.swagger.address_service_api.model.AddressResponse.class);
+        com.nsc.swagger.address_service_api.model.AddressResponse addressResponse = monoResult.block();
         List<com.nsc.swagger.address_service_api.model.Address> addressList =
                 objectMapper.convertValue(addressResponse.getData(), new TypeReference<>() { });
         addressList.stream().forEach(addr -> listOfAddresses.add(addressMapper.generateToModel(addr)));

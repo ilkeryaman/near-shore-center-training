@@ -1,13 +1,10 @@
 package com.nsc.customer.service.cache.impl;
 
 import com.nsc.customer.enums.cache.CacheName;
-import com.nsc.customer.model.customer.Address;
 import com.nsc.customer.service.cache.ICacheService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class AddressCacheServiceImpl implements ICacheService {
@@ -15,7 +12,7 @@ public class AddressCacheServiceImpl implements ICacheService {
     private final String cacheName = CacheName.ADDRESS.getValue();
 
     @Autowired
-    CacheManager cacheManager;
+    private CacheManager cacheManager;
 
     @Override
     public <T> T getCache(String key, Class keyClass) {

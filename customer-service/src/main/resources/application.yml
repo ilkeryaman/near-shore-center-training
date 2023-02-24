@@ -1,6 +1,26 @@
 server:
   port: 8081
 
+spring:
+  security:
+    oauth2:
+      client:
+        address-api:
+          clientId: customer-service
+          clientSecret: gzu9gPIrRL6BpbRonbeLyouVbeF2E9sA
+          accessTokenUri: http://192.168.229.129:38080/realms/address-service/protocol/openid-connect/token
+
+keycloak:
+  auth-server-url: http://192.168.229.129:38080
+  realm: customer-service
+  resource: customer-service
+  bearer-only: true
+
+auth:
+  enabled: true
+  ignored:
+    urls: /customer-api/swagger-ui/**, /customer-api/api-docs, /customer-api/api-docs/*, /actuator/**
+
 customer:
   file:
     url: src/main/resources/data/customers.json

@@ -24,7 +24,7 @@ import java.util.List;
 public class AddressController {
 
     @Resource(name = "addressFileService")
-    IAddressService addressService;
+    private IAddressService addressService;
 
     @Operation(summary = "Gets list of addresses.")
     @ApiResponses(value = {

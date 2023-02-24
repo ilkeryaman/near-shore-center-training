@@ -12,6 +12,7 @@ import com.nsc.customer.service.customer.ICustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service("customerMemoryDBService")
+@DependsOn("addressPicker")
 public class CustomerMemoryDBServiceImpl implements ICustomerService {
     private final Logger logger = LoggerFactory.getLogger(CustomerMemoryDBServiceImpl.class);
 
@@ -29,61 +31,57 @@ public class CustomerMemoryDBServiceImpl implements ICustomerService {
     @Autowired
     private IAddressService addressService;
 
-    private List<Customer> listOfCustomer;
+    private List<Customer> listOfCustomers;
 
     CustomerMemoryDBServiceImpl(){
-        listOfCustomer = new ArrayList<>();
+        listOfCustomers = new ArrayList<>();
     }
 
     @PostConstruct
     private void initData(){
-       List<Address> listOfAddresses = cacheService.getCache(CacheKey.ADDRESS_LIST.getValue(), List.class);
-        Address addressOfCustomer1 = new Address();
-        addressOfCustomer1.setCity("İstanbul");
-        addressOfCustomer1.setDistrict("Bahcelievler");
-
-        Address addressOfCustomer2 = new Address();
-        addressOfCustomer2.setCity("Ankara");
-        addressOfCustomer2.setDistrict("Cankaya");
+        Address defaultAddress = getDefaultAddress();
+        List<Address> listOfAddresses = cacheService.getCache(CacheKey.ADDRESS_LIST.getValue(), List.class);
+        Optional<Address> addressOptionalOfCustomer1 = listOfAddresses.stream().filter(address -> address.getCity().equals(City.ISTANBUL.getValue())).findFirst();
+        Optional<Address> addressOptionalOfCustomer2 = listOfAddresses.stream().filter(address -> address.getCity().equals(City.IZMIR.getValue())).findAny();
 
         Customer customer1 = new Customer();
         customer1.setId(1L);
         customer1.setCustomerNo("1001");
         customer1.setName("Ilker");
         customer1.setSurname("Yaman");
-        customer1.setAddress(addressOfCustomer1);
+        customer1.setAddress(addressOptionalOfCustomer1.orElse(defaultAddress));
 
         Customer customer2 = new Customer();
         customer2.setId(2L);
         customer2.setCustomerNo("1002");
         customer2.setName("Sinan");
         customer2.setSurname("Bulubay");
-        customer2.setAddress(addressOfCustomer2);
+        customer2.setAddress(addressOptionalOfCustomer2.orElse(defaultAddress));
 
-        listOfCustomer.add(customer1);
-        listOfCustomer.add(customer2);
+        listOfCustomers.add(customer1);
+        listOfCustomers.add(customer2);
     }
 
     public List<Customer> getCustomerList(){
-        return listOfCustomer;
+        return listOfCustomers;
     }
 
     @Override
     public Customer findCustomerById(long id) {
-        Optional<Customer> customerOptional = listOfCustomer.stream().filter(customer -> customer.getId() == id).findFirst();
+        Optional<Customer> customerOptional = listOfCustomers.stream().filter(customer -> customer.getId() == id).findFirst();
         return customerOptional.isPresent() ? customerOptional.get() : null;
     }
 
     @Override
     public boolean addCustomer(Customer customer) {
         validateAddress(customer.getAddress());
-        listOfCustomer.add(customer);
+        listOfCustomers.add(customer);
         return true;
     }
 
     @Override
     public boolean deleteCustomer(long id) {
-        return listOfCustomer.removeIf(customer -> customer.getId() == id);
+        return listOfCustomers.removeIf(customer -> customer.getId() == id);
     }
 
     private void validateAddress(Address address){
@@ -100,6 +98,9 @@ public class CustomerMemoryDBServiceImpl implements ICustomerService {
         ){
             throw new AddressNotFoundException(ResponseMessage.ADDRESS_NOT_FOUND.getValue());
         }
+    }
 
+    private Address getDefaultAddress(){
+        return new Address(City.ANKARA.getValue(), "Çankaya");
     }
 }

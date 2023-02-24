@@ -13,7 +13,7 @@ public class CacheCleanJob {
     private final Logger logger = LoggerFactory.getLogger(CacheCleanJob.class);
 
     @Autowired
-    ICacheService cacheService;
+    private ICacheService cacheService;
 
     @Scheduled(fixedDelayString = "${cache.clean.intervalInMilliseconds}", initialDelayString = "${cache.clean.intervalInMilliseconds}")
     public void cleanCache(){

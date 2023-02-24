@@ -25,7 +25,7 @@ import java.util.List;
 public class CustomersController {
 
     @Resource(name = "customerMemoryDBService")
-    ICustomerService customerService;
+    private ICustomerService customerService;
 
     @Operation(summary = "Gets list of customers.")
     @ApiResponses(value = {

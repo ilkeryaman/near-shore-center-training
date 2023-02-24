@@ -1,6 +1,17 @@
 server:
   port: 8082
 
+keycloak:
+  auth-server-url: http://192.168.229.129:38080
+  realm: address-service
+  resource: address-service
+  bearer-only: true
+
+auth:
+  enabled: true
+  ignored:
+    urls: /address-api/swagger-ui/**, /address-api/api-docs, /address-api/api-docs/*, /actuator/**
+
 address:
   file:
     url: src/main/resources/data/addresses.json
@@ -13,6 +24,7 @@ management:
   info:
     env:
       enabled: true
+
 info:
   contributors:
     - Ilker Yaman
