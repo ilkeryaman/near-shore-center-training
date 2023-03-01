@@ -1,4 +1,4 @@
-package com.nsc.address.security;
+package com.nsc.address.configuration.security;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;

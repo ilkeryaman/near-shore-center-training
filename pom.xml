@@ -17,6 +17,7 @@
     <modules>
         <module>customer-service</module>
         <module>address-service</module>
+        <module>billing-service</module>
     </modules>
 
     <properties>

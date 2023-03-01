@@ -1,4 +1,4 @@
-package com.nsc.address.security;
+package com.nsc.address.configuration.security;
 
 import com.nsc.address.enums.security.Role;
 import org.keycloak.adapters.springsecurity.KeycloakConfiguration;

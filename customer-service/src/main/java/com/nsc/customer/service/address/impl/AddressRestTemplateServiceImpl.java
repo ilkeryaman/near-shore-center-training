@@ -2,10 +2,10 @@ package com.nsc.customer.service.address.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nsc.customer.converter.mapstruct.IAddressMapper;
-import com.nsc.customer.model.customer.Address;
+import com.nsc.customer.mapstruct.IAddressMapper;
 import com.nsc.customer.service.address.IAddressService;
 import com.nsc.customer.util.HttpUtil;
+import com.nsc.swagger.address_service_api.model.AddressResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
@@ -32,13 +32,13 @@ public class AddressRestTemplateServiceImpl implements IAddressService {
     private ObjectMapper objectMapper;
 
     @Override
-    public List<Address> getListOfAddresses() {
-        List<Address> listOfAddresses = new ArrayList<>();
+    public List<com.nsc.customer.model.customer.Address> getListOfAddresses() {
+        List<com.nsc.customer.model.customer.Address> listOfAddresses = new ArrayList<>();
 
-        ResponseEntity<com.nsc.swagger.address_service_api.model.AddressResponse> restResult =
-                restTemplate.exchange(uri, HttpMethod.GET, HttpUtil.getHttpEntity(), com.nsc.swagger.address_service_api.model.AddressResponse.class);
+        ResponseEntity<AddressResponse> restResult =
+                restTemplate.exchange(uri, HttpMethod.GET, HttpUtil.getHttpEntity(), AddressResponse.class);
 
-        com.nsc.swagger.address_service_api.model.AddressResponse addressResponse = restResult.getBody();
+        AddressResponse addressResponse = restResult.getBody();
         List<com.nsc.swagger.address_service_api.model.Address> addressList =
                 objectMapper.convertValue(addressResponse.getData(), new TypeReference<>() { });
         addressList.stream().forEach(addr -> listOfAddresses.add(addressMapper.generateToModel(addr)));

@@ -1,4 +1,4 @@
-package com.nsc.address.security;
+package com.nsc.address.configuration.security;
 
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.springframework.context.annotation.Bean;

@@ -9,11 +9,12 @@ import com.nsc.customer.model.response.CustomerResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.ClientAuthorizationException;
+import org.springframework.security.oauth2.client.resource.OAuth2AccessDeniedException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -37,6 +38,18 @@ public class CustomerServiceExceptionHandler extends ResponseEntityExceptionHand
     @ExceptionHandler(AddressApiHttpServerErrorException.class)
     public final ResponseEntity<Object> handleHttpServerErrorException(AddressApiHttpServerErrorException ex, WebRequest request) {
         CustomerResponse customerResponse = new CustomerResponse(ResponseCode.ADDRESS_SERVICE_ERROR.getValue(), ResponseMessage.ADDRESS_SERVICE_ERROR.getValue(), null);
+        return new ResponseEntity(customerResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(ClientAuthorizationException.class)
+    public final ResponseEntity<Object> handleClientAuthorizationException(ClientAuthorizationException ex, WebRequest request) {
+        CustomerResponse customerResponse = new CustomerResponse(ResponseCode.SB_AUTHENTICATION_EXCEPTION.getValue(), ResponseMessage.SB_AUTHENTICATION_EXCEPTION.getValue(), null);
+        return new ResponseEntity(customerResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(OAuth2AccessDeniedException.class)
+    public final ResponseEntity<Object> handleOAuth2AccessDeniedException(OAuth2AccessDeniedException ex, WebRequest request) {
+        CustomerResponse customerResponse = new CustomerResponse(ResponseCode.SB_AUTHENTICATION_EXCEPTION.getValue(), ResponseMessage.SB_AUTHENTICATION_EXCEPTION.getValue(), null);
         return new ResponseEntity(customerResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

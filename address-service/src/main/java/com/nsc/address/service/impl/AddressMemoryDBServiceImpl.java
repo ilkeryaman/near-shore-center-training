@@ -1,7 +1,7 @@
 package com.nsc.address.service.impl;
 
-import com.nsc.address.enums.address.District;
 import com.nsc.address.service.IAddressService;
+import com.nsc.address.enums.address.District;
 import com.nsc.address.model.address.Address;
 import org.springframework.stereotype.Service;
 
