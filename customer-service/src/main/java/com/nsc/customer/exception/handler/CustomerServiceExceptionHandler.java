@@ -5,6 +5,7 @@ import com.nsc.customer.enums.response.ResponseMessage;
 import com.nsc.customer.exception.AddressApiHttpServerErrorException;
 import com.nsc.customer.exception.AddressNotFoundException;
 import com.nsc.customer.exception.CustomerNotFoundException;
+import com.nsc.customer.exception.MessageNotProcessedErrorException;
 import com.nsc.customer.model.response.CustomerResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -55,6 +56,12 @@ public class CustomerServiceExceptionHandler extends ResponseEntityExceptionHand
 
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<Object> handleUnhandledException(Exception ex, WebRequest request) {
+        CustomerResponse customerResponse = new CustomerResponse(ResponseCode.GENERAL_ERROR.getValue(), ResponseMessage.GENERAL_ERROR.getValue(), null);
+        return new ResponseEntity(customerResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(MessageNotProcessedErrorException.class)
+    public final ResponseEntity<Object> handleMessageNotProcessedErrorException(MessageNotProcessedErrorException ex, WebRequest request) {
         CustomerResponse customerResponse = new CustomerResponse(ResponseCode.GENERAL_ERROR.getValue(), ResponseMessage.GENERAL_ERROR.getValue(), null);
         return new ResponseEntity(customerResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }

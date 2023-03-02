@@ -1,13 +1,11 @@
-package com.nsc.customer.model.response;
+package com.nsc.billing.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.io.Serializable;
-
 @Data
 @AllArgsConstructor
-public class CustomerResponse<T> {
+public class AddressResponse<T> {
     private String code;
     private String message;
     private T data;

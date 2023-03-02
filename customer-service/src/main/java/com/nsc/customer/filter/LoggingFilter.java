@@ -27,7 +27,7 @@ public class LoggingFilter extends OncePerRequestFilter {
         long timeTaken = System.currentTimeMillis() - startTime;
 
         String requestBody = getStringValue(requestWrapper.getContentAsByteArray(), request.getCharacterEncoding());
-        String responseBody = getStringValue(responseWrapper.getContentAsByteArray(), response.getCharacterEncoding());
+        String responseBody = getStringValue(responseWrapper.getContentAsByteArray(), "UTF-8");
 
         logger.info("\n>>> Finished processing: \n" +
                         "Method: [{}]\nRequest Uri: [{}]\nPayload: {}\nResponse Code: [{}]\nResponse: {}\nTime Taken: {} ms",

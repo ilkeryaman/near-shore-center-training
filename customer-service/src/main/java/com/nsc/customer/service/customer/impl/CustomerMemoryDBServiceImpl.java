@@ -2,17 +2,21 @@ package com.nsc.customer.service.customer.impl;
 
 import com.nsc.customer.enums.address.City;
 import com.nsc.customer.enums.cache.CacheKey;
+import com.nsc.customer.enums.messaging.KafkaTopic;
 import com.nsc.customer.enums.response.ResponseMessage;
 import com.nsc.customer.exception.AddressNotFoundException;
+import com.nsc.customer.model.messaging.EventMessage;
 import com.nsc.customer.service.address.IAddressService;
 import com.nsc.customer.service.cache.ICacheService;
 import com.nsc.customer.service.customer.ICustomerService;
 import com.nsc.customer.model.customer.Address;
 import com.nsc.customer.model.customer.Customer;
+import com.nsc.customer.service.messaging.IMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -30,6 +34,9 @@ public class CustomerMemoryDBServiceImpl implements ICustomerService {
 
     @Autowired
     private IAddressService addressService;
+
+    @Autowired
+    private IMessageService messageService;
 
     private List<Customer> listOfCustomers;
 
@@ -76,6 +83,8 @@ public class CustomerMemoryDBServiceImpl implements ICustomerService {
     public boolean addCustomer(Customer customer) {
         validateAddress(customer.getAddress());
         listOfCustomers.add(customer);
+        EventMessage eventMessage = new EventMessage(String.valueOf(customer.getId()), KafkaTopic.NSC_CUSTOMER_CREATED.getValue(), customer);
+        messageService.sendMessage(eventMessage);
         return true;
     }
 

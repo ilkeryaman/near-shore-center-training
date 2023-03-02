@@ -1,12 +1,15 @@
 package com.nsc.customer.configuration.security;
 
+import com.nsc.customer.configuration.security.handler.CustomerKeycloakAuthenticationFailureHandler;
 import com.nsc.customer.enums.security.Role;
 import org.keycloak.adapters.springsecurity.KeycloakConfiguration;
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
+import org.keycloak.adapters.springsecurity.filter.KeycloakAuthenticationProcessingFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,10 +26,22 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     private String[] authIgnoredURLs;
 
     @Autowired
+    private CustomerKeycloakAuthenticationFailureHandler customerKeycloakAuthenticationFailureHandler;
+
+    @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         KeycloakAuthenticationProvider keycloakAuthenticationProvider = keycloakAuthenticationProvider();
         keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
         auth.authenticationProvider(keycloakAuthenticationProvider);
+    }
+
+    @Bean
+    @Override
+    protected KeycloakAuthenticationProcessingFilter keycloakAuthenticationProcessingFilter() throws Exception {
+        KeycloakAuthenticationProcessingFilter filter = new KeycloakAuthenticationProcessingFilter(authenticationManagerBean());
+        filter.setSessionAuthenticationStrategy(sessionAuthenticationStrategy());
+        filter.setAuthenticationFailureHandler(customerKeycloakAuthenticationFailureHandler);
+        return filter;
     }
 
     @Override
@@ -49,7 +64,10 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .exceptionHandling()
+                .accessDeniedHandler(customerKeycloakAuthenticationFailureHandler);
     }
 
     @Override

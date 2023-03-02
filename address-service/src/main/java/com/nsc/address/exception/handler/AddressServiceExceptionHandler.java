@@ -25,6 +25,12 @@ public class AddressServiceExceptionHandler extends ResponseEntityExceptionHandl
         return new ResponseEntity(addressResponse, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(Exception.class)
+    public final ResponseEntity<Object> handleUnhandledException(Exception ex, WebRequest request) {
+        AddressResponse addressResponse = new AddressResponse(ResponseCode.GENERAL_ERROR.getValue(), ResponseMessage.GENERAL_ERROR.getValue(), null);
+        return new ResponseEntity(addressResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         Optional<ObjectError> errorOptional = ex.getBindingResult().getAllErrors().stream().findFirst();

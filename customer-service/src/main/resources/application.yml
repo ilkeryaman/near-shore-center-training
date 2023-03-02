@@ -2,25 +2,30 @@ server:
   port: 8081
 
 spring:
+  config:
+    import: optional:secret.yaml
   security:
     oauth2:
       client:
         address-api:
-          clientId: customer-service
-          clientSecret: gzu9gPIrRL6BpbRonbeLyouVbeF2E9sA
-          accessTokenUri: http://192.168.229.129:38080/realms/address-service/protocol/openid-connect/token
+          clientId: ${address-api.clientId}
+          clientSecret: ${address-api.clientSecret}
+          accessTokenUri: ${address-api.accessTokenUri}
           expireCorrectionInSeconds: 20
         registration:
           address-api:
-            clientId: customer-service
-            clientSecret: gzu9gPIrRL6BpbRonbeLyouVbeF2E9sA
+            clientId: ${address-api.clientId}
+            clientSecret: ${address-api.clientSecret}
             authorizationGrantType: client_credentials
         provider:
           address-api:
-            tokenUri: http://192.168.229.129:38080/realms/address-service/protocol/openid-connect/token
+            tokenUri: ${address-api.accessTokenUri}
+  kafka:
+    enabled: true
+    bootstrap-servers: ${kafka.server}:${kafka.port}
 
 keycloak:
-  auth-server-url: http://192.168.229.129:38080
+  auth-server-url: ${kcloak.auth-server.protocol}://${kcloak.auth-server.host}:${kcloak.auth-server.port}
   realm: customer-service
   resource: customer-service
   bearer-only: true
@@ -36,12 +41,11 @@ customer:
 
 rest:
   address-service:
-    uri: http://localhost:8082/address-api/addresses
+    uri: ${address-api.protocol}://${address-api.host}:${address-api.port}/address-api/addresses
 
 cache:
   clean:
     intervalInMilliseconds: 20000
-
 
 management:
   endpoints:
@@ -51,6 +55,7 @@ management:
   info:
     env:
       enabled: true
+
 info:
   contributors:
     - Ilker Yaman
@@ -65,4 +70,3 @@ spring-doc:
     path: /customer-api/api-docs
   swagger-ui:
     path: /customer-api/swagger-ui
-

@@ -1,0 +1,11 @@
+server:
+  port: 8083
+
+spring:
+  config:
+    import: optional:secret.yml
+  kafka:
+    enabled: true
+    bootstrap-servers: ${kafka.server}:${kafka.port}
+    consumer:
+      group-id: billing-service
