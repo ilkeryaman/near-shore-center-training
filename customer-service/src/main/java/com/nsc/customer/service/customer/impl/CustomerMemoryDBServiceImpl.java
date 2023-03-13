@@ -110,6 +110,6 @@ public class CustomerMemoryDBServiceImpl implements ICustomerService {
     }
 
     private Address getDefaultAddress(){
-        return new Address(City.ANKARA.getValue(), "Çankaya");
+        return new Address(null, City.ANKARA.getValue(), "Çankaya");
     }
 }

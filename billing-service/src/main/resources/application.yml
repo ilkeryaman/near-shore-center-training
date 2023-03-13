@@ -9,3 +9,14 @@ spring:
     bootstrap-servers: ${kafka.server}:${kafka.port}
     consumer:
       group-id: billing-service
+  datasource:
+    url: jdbc:postgresql://192.168.229.129:5432/nsc_billing
+    username: ${db.username}
+    password: ${db.password}
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate-dialect: org.hibernate.dialect.PostgreSQLDialect
+      format_sql: true

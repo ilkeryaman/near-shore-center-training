@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nsc.billing.configuration.messaging.KafkaTopicConfig;
 import com.nsc.billing.enums.messaging.KafkaTopic;
 import com.nsc.billing.listener.messaging.IMessageListener;
+import com.nsc.billing.model.account.CustomerAccount;
 import com.nsc.billing.model.customer.Customer;
+import com.nsc.billing.service.IBillingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class MessageListenerImpl implements IMessageListener {
     private static final Logger logger = LoggerFactory.getLogger(MessageListenerImpl.class);
 
     @Autowired
+    private IBillingService billingService;
+
+    @Autowired
     private KafkaTopicConfig kafkaTopicConfig;
 
 
@@ -35,6 +40,7 @@ public class MessageListenerImpl implements IMessageListener {
         Customer customer = deSerializeMessage(message);
 
         if(KafkaTopic.NSC_CUSTOMER_CREATED.getValue().equals(topic)){
+            billingService.addCustomerAccount(customer);
             logger.info("Customer billing account is created for customer with number: {}!", customer.getCustomerNo());
         }
 

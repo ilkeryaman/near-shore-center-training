@@ -24,7 +24,7 @@ import java.util.List;
 @RequestMapping("/customer-api")
 public class CustomersController {
 
-    @Resource(name = "customerMemoryDBService")
+    @Resource(name = "customerDBService")
     private ICustomerService customerService;
 
     @Operation(summary = "Gets list of customers.")

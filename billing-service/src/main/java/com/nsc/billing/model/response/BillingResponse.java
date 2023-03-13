@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class AddressResponse<T> {
+public class BillingResponse<T> {
     private String code;
     private String message;
     private T data;

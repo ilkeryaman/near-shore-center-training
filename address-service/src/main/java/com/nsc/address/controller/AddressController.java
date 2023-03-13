@@ -23,7 +23,7 @@ import java.util.List;
 @RequestMapping("/address-api")
 public class AddressController {
 
-    @Resource(name = "addressFileService")
+    @Resource(name = "addressDBService")
     private IAddressService addressService;
 
     @Operation(summary = "Gets list of addresses.")

@@ -23,6 +23,17 @@ spring:
   kafka:
     enabled: true
     bootstrap-servers: ${kafka.server}:${kafka.port}
+  datasource:
+    url: jdbc:postgresql://192.168.229.129:5432/nsc_customer
+    username: ${db.username}
+    password: ${db.password}
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate-dialect: org.hibernate.dialect.PostgreSQLDialect
+      format_sql: true
 
 keycloak:
   auth-server-url: ${kcloak.auth-server.protocol}://${kcloak.auth-server.host}:${kcloak.auth-server.port}

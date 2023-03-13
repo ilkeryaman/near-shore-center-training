@@ -9,6 +9,18 @@ spring:
     bootstrap-servers: ${kafka.server}:${kafka.port}
     consumer:
       group-id: address-service
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: ${db.username}
+    password: ${db.password}
+  sql:
+    init:
+      schema-locations: classpath:/data/sql/schema.sql
+      data-locations: classpath:/data/sql/data.sql
+  h2:
+    console:
+      enabled: true
+
 
 keycloak:
   auth-server-url: ${kcloak.auth-server.protocol}://${kcloak.auth-server.host}:${kcloak.auth-server.port}
@@ -19,7 +31,7 @@ keycloak:
 auth:
   enabled: true
   ignored:
-    urls: /address-api/swagger-ui/**, /address-api/api-docs, /address-api/api-docs/*, /actuator/**
+    urls: /address-api/swagger-ui/**, /address-api/api-docs, /address-api/api-docs/*, /actuator/**, /h2-console, /h2-console/**
 
 address:
   file:
