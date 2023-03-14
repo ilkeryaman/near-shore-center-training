@@ -23,6 +23,8 @@
         <keycloak.version>20.0.5</keycloak.version>
         <spring.security.oauth2-autoconfigure.version>2.6.8</spring.security.oauth2-autoconfigure.version>
         <spring.security.oauth2.client.version>5.7.3</spring.security.oauth2.client.version>
+        <resilience4j.version>1.6.1</resilience4j.version>
+        <io.vavr.version>0.10.4</io.vavr.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
         <address-service-api.yaml.file>${project.basedir}/src/main/resources/swagger/address-service-api.yaml</address-service-api.yaml.file>
@@ -85,6 +87,22 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.resilience4j</groupId>
+            <artifactId>resilience4j-retry</artifactId>
+            <version>${resilience4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.resilience4j</groupId>
+            <artifactId>resilience4j-circuitbreaker</artifactId>
+            <version>${resilience4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.vavr</groupId>
+            <artifactId>vavr</artifactId>
+            <version>${io.vavr.version}</version>
         </dependency>
 
     </dependencies>

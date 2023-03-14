@@ -67,6 +67,10 @@ management:
     env:
       enabled: true
 
+retry:
+  maxAttempts: 4
+  waitDuration: 3000
+
 info:
   contributors:
     - Ilker Yaman

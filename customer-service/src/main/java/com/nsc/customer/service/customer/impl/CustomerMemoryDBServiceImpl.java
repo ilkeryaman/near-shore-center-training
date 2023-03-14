@@ -12,11 +12,13 @@ import com.nsc.customer.service.customer.ICustomerService;
 import com.nsc.customer.model.customer.Address;
 import com.nsc.customer.model.customer.Customer;
 import com.nsc.customer.service.messaging.IMessageService;
+import io.github.resilience4j.retry.Retry;
+import io.vavr.CheckedFunction0;
+import io.vavr.control.Try;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
-import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -37,6 +39,16 @@ public class CustomerMemoryDBServiceImpl implements ICustomerService {
 
     @Autowired
     private IMessageService messageService;
+
+    @Autowired
+    private Retry retry;
+
+    private CheckedFunction0<List<Address>> checkedFunction;
+
+    @PostConstruct
+    public void decorateFunctions(){
+        checkedFunction = Retry.decorateCheckedSupplier(retry, this::getListOfAddresses);
+    }
 
     private List<Customer> listOfCustomers;
 
@@ -96,7 +108,9 @@ public class CustomerMemoryDBServiceImpl implements ICustomerService {
     private void validateAddress(Address address){
         List<Address> listOfAddresses = cacheService.getCache(CacheKey.ADDRESS_LIST.getValue(), List.class);
         if(listOfAddresses == null){
-            listOfAddresses = addressService.getListOfAddresses();
+            Try<List<Address>> result = Try.of(checkedFunction)
+                    .recover(throwable -> new ArrayList<>());
+            listOfAddresses = result.get();
             cacheService.putCache(CacheKey.ADDRESS_LIST.getValue(), listOfAddresses);
             logger.warn("Address was null!");
         }
@@ -107,6 +121,11 @@ public class CustomerMemoryDBServiceImpl implements ICustomerService {
         ){
             throw new AddressNotFoundException(ResponseMessage.ADDRESS_NOT_FOUND.getValue());
         }
+    }
+
+    private List<Address> getListOfAddresses(){
+        logger.info("getListOfAddresses is called!");
+        return addressService.getListOfAddresses();
     }
 
     private Address getDefaultAddress(){
