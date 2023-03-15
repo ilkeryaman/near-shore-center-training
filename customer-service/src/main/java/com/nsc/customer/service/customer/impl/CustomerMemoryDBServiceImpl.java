@@ -3,16 +3,17 @@ package com.nsc.customer.service.customer.impl;
 import com.nsc.customer.enums.address.City;
 import com.nsc.customer.enums.cache.CacheKey;
 import com.nsc.customer.enums.messaging.KafkaTopic;
+import com.nsc.customer.enums.resilience.Instance;
 import com.nsc.customer.enums.response.ResponseMessage;
 import com.nsc.customer.exception.AddressNotFoundException;
 import com.nsc.customer.model.messaging.EventMessage;
+import com.nsc.customer.resilience.ResilienceConfigurer;
 import com.nsc.customer.service.address.IAddressService;
 import com.nsc.customer.service.cache.ICacheService;
 import com.nsc.customer.service.customer.ICustomerService;
 import com.nsc.customer.model.customer.Address;
 import com.nsc.customer.model.customer.Customer;
 import com.nsc.customer.service.messaging.IMessageService;
-import io.github.resilience4j.retry.Retry;
 import io.vavr.CheckedFunction0;
 import io.vavr.control.Try;
 import org.slf4j.Logger;
@@ -41,13 +42,13 @@ public class CustomerMemoryDBServiceImpl implements ICustomerService {
     private IMessageService messageService;
 
     @Autowired
-    private Retry retry;
+    private ResilienceConfigurer resilienceConfigurer;
 
     private CheckedFunction0<List<Address>> checkedFunction;
 
     @PostConstruct
     public void decorateFunctions(){
-        checkedFunction = Retry.decorateCheckedSupplier(retry, this::getListOfAddresses);
+        checkedFunction = resilienceConfigurer.decorateWithRetryAndCircuitBreaker(Instance.GET_LIST_OF_ADDRESSES.getValue(), this::getListOfAddresses);
     }
 
     private List<Customer> listOfCustomers;
@@ -107,13 +108,12 @@ public class CustomerMemoryDBServiceImpl implements ICustomerService {
 
     private void validateAddress(Address address){
         List<Address> listOfAddresses = cacheService.getCache(CacheKey.ADDRESS_LIST.getValue(), List.class);
-        if(listOfAddresses == null){
-            Try<List<Address>> result = Try.of(checkedFunction)
-                    .recover(throwable -> new ArrayList<>());
+        //if(listOfAddresses == null){
+            Try<List<Address>> result = Try.of(checkedFunction).recover(throwable -> new ArrayList<>());
             listOfAddresses = result.get();
             cacheService.putCache(CacheKey.ADDRESS_LIST.getValue(), listOfAddresses);
             logger.warn("Address was null!");
-        }
+        //}
 
         if(listOfAddresses.stream().noneMatch(addr ->
                 addr.getCity().equals(address.getCity())

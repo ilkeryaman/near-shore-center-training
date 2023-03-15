@@ -44,7 +44,7 @@ keycloak:
 auth:
   enabled: true
   ignored:
-    urls: /customer-api/swagger-ui/**, /customer-api/api-docs, /customer-api/api-docs/*, /actuator/**
+    urls: /customer-api/swagger-ui/**, /customer-api/api-docs, /customer-api/api-docs/*, /actuator/**, /resilience/**
 
 customer:
   file:
@@ -67,9 +67,16 @@ management:
     env:
       enabled: true
 
-retry:
-  maxAttempts: 4
-  waitDuration: 3000
+resilience:
+  retry:
+    maxAttempts: 2
+    waitDuration: 3000
+  circuitbreaker:
+    failureRateThreshold: 50
+    waitDurationInOpenState: 10000
+    permittedNumberOfCallsInHalfOpenState: 5
+    minimumNumberOfCalls: 6
+    slidingWindowSize: 10
 
 info:
   contributors:
