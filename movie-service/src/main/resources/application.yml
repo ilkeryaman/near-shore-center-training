@@ -1,0 +1,13 @@
+server:
+  port: 8084
+
+soap:
+  topdown:
+    servletRegistration:
+      urlMappings:
+        /movie-service/*
+    wsdlDefinition:
+      schemaLocation: xsd/movies.xsd
+      locationUri: /movie-service
+      portTypeName: MoviesPort
+      targetNameSpace: http://topdown.eri.com/movie-service

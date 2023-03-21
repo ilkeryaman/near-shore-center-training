@@ -108,12 +108,12 @@ public class CustomerMemoryDBServiceImpl implements ICustomerService {
 
     private void validateAddress(Address address){
         List<Address> listOfAddresses = cacheService.getCache(CacheKey.ADDRESS_LIST.getValue(), List.class);
-        //if(listOfAddresses == null){
+        if(listOfAddresses == null){
             Try<List<Address>> result = Try.of(checkedFunction).recover(throwable -> new ArrayList<>());
             listOfAddresses = result.get();
             cacheService.putCache(CacheKey.ADDRESS_LIST.getValue(), listOfAddresses);
             logger.warn("Address was null!");
-        //}
+        }
 
         if(listOfAddresses.stream().noneMatch(addr ->
                 addr.getCity().equals(address.getCity())
@@ -126,6 +126,10 @@ public class CustomerMemoryDBServiceImpl implements ICustomerService {
     private List<Address> getListOfAddresses(){
         logger.info("getListOfAddresses is called!");
         return addressService.getListOfAddresses();
+    }
+
+    public CheckedFunction0<List<Address>> getCheckedFunction(){
+        return this::getListOfAddresses;
     }
 
     private Address getDefaultAddress(){

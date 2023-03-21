@@ -1,0 +1,69 @@
+<!-- Check: https://spring.io/guides/gs/producing-web-service/ -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://topdown.eri.com/movie-service"
+           targetNamespace="http://topdown.eri.com/movie-service" elementFormDefault="qualified">
+
+    <xs:element name="listMoviesRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:integer"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="listMoviesResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="movies" type="tns:movie" maxOccurs="unbounded" minOccurs="0" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="addMovieRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="movie" type="tns:movie"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="addMovieResponse">
+    </xs:element>
+
+    <xs:element name="deleteMovieRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:integer"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteMovieResponse">
+    </xs:element>
+
+    <!-- -->
+
+    <xs:complexType name="movie">
+        <xs:sequence>
+            <xs:element name="id" type="xs:integer"/>
+            <xs:element name="title" type="xs:string"/>
+            <xs:element name="categories" type="xs:string" maxOccurs="unbounded" minOccurs="0" />
+            <xs:element name="directors" type="tns:director" maxOccurs="unbounded" minOccurs="0" />
+            <xs:element name="stars" type="tns:star" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="director">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="surname" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="star">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="surname" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
