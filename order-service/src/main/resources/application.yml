@@ -1,0 +1,6 @@
+server:
+  port: 8085
+
+soap:
+  bottomup:
+    url: http://localhost:8086/order-api

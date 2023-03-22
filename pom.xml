@@ -19,6 +19,7 @@
         <module>address-service</module>
         <module>billing-service</module>
         <module>movie-service</module>
+        <module>order-service</module>
     </modules>
 
     <properties>
