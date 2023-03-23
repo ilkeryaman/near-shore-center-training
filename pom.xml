@@ -20,6 +20,7 @@
         <module>billing-service</module>
         <module>movie-service</module>
         <module>order-service</module>
+        <module>movie-mw-service</module>
     </modules>
 
     <properties>

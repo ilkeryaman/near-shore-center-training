@@ -1,0 +1,5 @@
+server:
+  port: 8087
+
+movie-service:
+  uri: http://localhost:8084/movie-service

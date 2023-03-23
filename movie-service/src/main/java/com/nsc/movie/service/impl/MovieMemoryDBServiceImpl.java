@@ -69,7 +69,7 @@ public class MovieMemoryDBServiceImpl implements IMovieService {
 
     @Override
     public Movie findMovieById(long id) {
-        return movies.stream().filter(movie -> movie.getId() == BigInteger.valueOf(id)).findFirst().orElse(null);
+        return movies.stream().filter(movie -> movie.getId().equals(BigInteger.valueOf(id))).findFirst().orElse(null);
     }
 
     @Override
@@ -79,6 +79,6 @@ public class MovieMemoryDBServiceImpl implements IMovieService {
 
     @Override
     public void deleteMovie(long id) {
-        movies.removeIf(movie -> movie.getId() == BigInteger.valueOf(id));
+        movies.removeIf(movie -> movie.getId().equals(BigInteger.valueOf(id)));
     }
 }
